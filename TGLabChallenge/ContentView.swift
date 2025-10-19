@@ -20,7 +20,6 @@ struct ContentView: View {
                 .tabItem {
                     Label("Jogos", systemImage: "gamecontroller")
                 }
-
         }
     }
 }
