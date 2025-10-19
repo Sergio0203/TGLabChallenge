@@ -8,7 +8,7 @@ import SwiftUI
 import NBAService
 
 @Observable
-final class TeamsViewViewModel {
+final class NBAViewModel {
     private let service = NBAService()
     var teamsList: [TeamDTO] = []
 

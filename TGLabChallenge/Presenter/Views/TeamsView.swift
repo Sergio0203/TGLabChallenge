@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct TeamsView: View {
-    @State var vm = TeamsViewViewModel()
+    @Environment(NBAViewModel.self) var vm
     var body: some View {
-        Text("Teams View")
-            .onAppear {
-                vm.fetchTeams()
-            }
+        
     }
 }
 
+#if DEBUG
 #Preview {
     TeamsView()
+        .environment(NBAViewModel())
 }
+#endif

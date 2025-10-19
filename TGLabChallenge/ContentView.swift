@@ -8,8 +8,20 @@
 import SwiftUI
 import NBAService
 struct ContentView: View {
+    @State private var vm = NBAViewModel()
     var body: some View {
-       TeamsView()
+        TabView {
+            TeamsView()
+                .environment(vm)
+                .tabItem {
+                    Label("Times", systemImage: "list.bullet")
+                }
+            Text("Text")
+                .tabItem {
+                    Label("Jogos", systemImage: "gamecontroller")
+                }
+
+        }
     }
 }
 
