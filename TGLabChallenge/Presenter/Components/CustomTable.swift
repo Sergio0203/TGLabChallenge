@@ -6,37 +6,68 @@
 //
 import SwiftUI
 
-struct CustomTable<Element: Identifiable, HeaderContent: View, RowContent: View>: View {
-    let items: [Element]
-    let onRowTapped: ((Element) -> Void)?
-    @ViewBuilder let headerContent: () -> HeaderContent
-    @ViewBuilder let rowContent: (Element) -> RowContent
+// Struct para definir as colunas da tabela de forma explícita.
+struct CustomTableColumn<Element> {
+    let title: AnyView
+    let content: (Element) -> AnyView
+    let maxWidth: CGFloat? // Nova propriedade para a largura máxima
 
-    init(items: [Element], onRowTapped: ((Element) -> Void)? = nil, @ViewBuilder headerContent: @escaping () -> HeaderContent, @ViewBuilder rowContent: @escaping (Element) -> RowContent) {
+    init<Title: View, Content: View>(
+        maxWidth: CGFloat,
+        @ViewBuilder title: () -> Title,
+        @ViewBuilder content: @escaping (Element) -> Content
+    ) {
+        self.maxWidth = maxWidth
+        self.title = AnyView(title())
+        self.content = { AnyView(content($0)) }
+    }
+    
+    init<Title: View, Content: View>(
+        @ViewBuilder title: () -> Title,
+        @ViewBuilder content: @escaping (Element) -> Content
+    ) {
+        self.maxWidth = nil
+        self.title = AnyView(title())
+        self.content = { AnyView(content($0)) }
+    }
+}
+
+struct CustomTable<Element: Identifiable>: View {
+    let items: [Element]
+    let columns: [CustomTableColumn<Element>]
+    let onRowTapped: ((Element) -> Void)?
+
+    init(
+        items: [Element],
+        columns: [CustomTableColumn<Element>],
+        onRowTapped: ((Element) -> Void)? = nil
+    ) {
         self.items = items
+        self.columns = columns
         self.onRowTapped = onRowTapped
-        self.headerContent = headerContent
-        self.rowContent = rowContent
     }
 
     var body: some View {
         ScrollView {
-            Grid(alignment: .leading, horizontalSpacing: 16, verticalSpacing: 12) {
+            let gridContent = Grid(alignment: .leading, horizontalSpacing: 16, verticalSpacing: 12) {
                 GridRow {
-                    headerContent()
-                    if onRowTapped != nil {
-                        Spacer()
-                        Image(systemName: "chevron.right")
-                            .hidden()
+                    ForEach(0..<columns.count, id: \.self) { index in
+                        let column = columns[index]
+                        column.title
+                            .frame(maxWidth: column.maxWidth, alignment: .center)
                     }
                 }
                 .font(.headline)
                 Divider()
                 ForEach(items) { item in
-                    GridRow(alignment: .center) {
-                        rowContent(item)
+                    GridRow(alignment: .top) { // Alterado de .center para .top
+                        ForEach(0..<columns.count, id: \.self) { index in
+                            let column = columns[index]
+                            column.content(item)
+                                .frame(maxWidth: column.maxWidth, alignment: .center)
+                        }
+                        
                         if onRowTapped != nil {
-                            Spacer()
                             Image(systemName: "chevron.right")
                         }
                     }
@@ -48,62 +79,12 @@ struct CustomTable<Element: Identifiable, HeaderContent: View, RowContent: View>
                 }
             }
             .padding()
-        }
-    }
-}
-
-private struct SampleData: Identifiable, Codable {
-    let id: UUID
-    let name: String
-    let status: String
-    let description: String
-}
-
-#Preview {
-    struct PreviewContainer: View {
-        @State private var sampleItems: [SampleData] = [
-            .init(id: UUID(), name: "Item 1", status: "Ativo", description: "Descrição mais longa para o primeiro item."),
-            .init(id: UUID(), name: "Item Com Nome Bem Longo", status: "Pendente", description: "Segunda descrição."),
-            .init(id: UUID(), name: "Outro Item", status: "Concluído", description: "A terceira e última descrição para este exemplo.")
-        ]
-        
-        var body: some View {
-            VStack(spacing: 30) {
-                Text("Tabela Clicável")
-                    .font(.title2.bold())
-                
-                // Exemplo com linhas clicáveis
-                CustomTable(
-                    items: sampleItems,
-                    onRowTapped: { item in
-                        print("Item tocado: \(item.name)")
-                    }
-                ) {
-                    Text("Nome")
-                    Text("Status")
-                    Text("Descrição")
-                } rowContent: { item in
-                    Text(item.name)
-                    Text(item.status)
-                    Text(item.description)
-                }
-                
-                Text("Tabela Não Clicável")
-                    .font(.title2.bold())
-                
-                // Exemplo com o padrão (linhas não clicáveis)
-                CustomTable(items: sampleItems) {
-                    Text("Nome")
-                    Text("Status")
-                    Text("Descrição")
-                } rowContent: { item in
-                    Text(item.name)
-                    Text(item.status)
-                    Text(item.description)
+            ViewThatFits(in: .horizontal) {
+                gridContent
+                ScrollView(.horizontal, showsIndicators: true) {
+                    gridContent
                 }
             }
         }
     }
-    
-    return PreviewContainer()
 }
