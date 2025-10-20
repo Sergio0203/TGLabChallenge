@@ -9,32 +9,19 @@ import SwiftUI
 import NBAService
 struct TeamsView: View {
     @Environment(NBAViewModel.self) var vm
+    @State private var selectedTeamID: Int?
+
     var body: some View {
         NavigationStack {
-            ScrollView {
-                Grid(alignment: .leading) {
-                    GridRow {
-                        Text("Name")
-                        Text("City")
-                        Text("Conference")
-                    }
-                    .bold()
-
-                    Divider()
-
-                    ForEach(vm.teamsList) { team in
-                        GridRow(alignment: .center){
-                            Text(team.fullName)
-                            Text(team.city)
-                            Text(team.conference)
-                            Image(systemName: "chevron.right")
-                        }
-                        Divider()
-                    }
-                }
-                .padding()
+            CustomTable(items: vm.teamsList) {
+                Text("Name")
+                Text("City")
+                Text("Conference")
+            } rowContent: { team in
+                Text(team.name)
+                Text(team.city)
+                Text(team.conference)
             }
-            .padding(.horizontal, 8)
             .navigationTitle("Teams")
             .onAppear() {
                 vm.fetchTeams()

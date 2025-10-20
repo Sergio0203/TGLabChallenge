@@ -10,16 +10,18 @@ import NBAService
 @Observable
 final class NBAViewModel {
     private let service = NBAService()
-    var teamsList: [TeamDTO] = []
+    var teamsList: [TeamModel] = []
 
     func fetchTeams() {
         Task {
-            var auxTeams: [TeamDTO] = []
+            var auxTeams: [TeamModel] = []
             do {
-                auxTeams = try await service.getTeams()
+                let teamsResponse = try await service.getTeams()
+                teamsResponse.forEach({ team in
+                    auxTeams.append(.init(by: team))
+                })
                 await MainActor.run {
                     self.teamsList = auxTeams
-                    print(self.teamsList)
                 }
             }
             catch let error{
