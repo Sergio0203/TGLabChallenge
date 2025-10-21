@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		EB2FE48D2EA229FA002C6ADA /* NBAService in Frameworks */ = {isa = PBXBuildFile; productRef = EB2FE48C2EA229FA002C6ADA /* NBAService */; };
+		EB6699F02EA7248200EA6EAE /* NBAService in Frameworks */ = {isa = PBXBuildFile; productRef = EB6699EF2EA7248200EA6EAE /* NBAService */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB6699F02EA7248200EA6EAE /* NBAService in Frameworks */,
 				EB2FE48D2EA229FA002C6ADA /* NBAService in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -118,6 +120,7 @@
 			name = TGLabChallenge;
 			packageProductDependencies = (
 				EB2FE48C2EA229FA002C6ADA /* NBAService */,
+				EB6699EF2EA7248200EA6EAE /* NBAService */,
 			);
 			productName = TGLabChallenge;
 			productReference = EB2FE4612EA229B9002C6ADA /* TGLabChallenge.app */;
@@ -202,7 +205,7 @@
 			mainGroup = EB2FE4582EA229B9002C6ADA;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				EB2FE48B2EA229FA002C6ADA /* XCLocalSwiftPackageReference "../NBAService" */,
+				EB6699EE2EA7248200EA6EAE /* XCLocalSwiftPackageReference "Dependencies/NBAService" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EB2FE4622EA229B9002C6ADA /* Products */;
@@ -589,14 +592,18 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		EB2FE48B2EA229FA002C6ADA /* XCLocalSwiftPackageReference "../NBAService" */ = {
+		EB6699EE2EA7248200EA6EAE /* XCLocalSwiftPackageReference "Dependencies/NBAService" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../NBAService;
+			relativePath = Dependencies/NBAService;
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		EB2FE48C2EA229FA002C6ADA /* NBAService */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NBAService;
+		};
+		EB6699EF2EA7248200EA6EAE /* NBAService */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = NBAService;
 		};
