@@ -8,11 +8,12 @@ import SwiftUI
 import NBAService
 
 @Observable
-final class NBAViewModel {
+final class TeamsViewModel {
     private let service = NBAService()
     var teamsList: [TeamModel] = []
+    var selectedTeam: TeamModel?
 
-    func fetchTeams() {
+    private func fetchTeams() {
         Task {
             var auxTeams: [TeamModel] = []
             do {
@@ -29,4 +30,10 @@ final class NBAViewModel {
             }
         }
     }
+    func loadInitialData() {
+        if teamsList.isEmpty {
+            fetchTeams()
+        }
+    }
+
 }

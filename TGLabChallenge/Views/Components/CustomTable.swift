@@ -6,32 +6,6 @@
 //
 import SwiftUI
 
-// Struct para definir as colunas da tabela de forma explícita.
-struct CustomTableColumn<Element> {
-    let title: AnyView
-    let content: (Element) -> AnyView
-    let maxWidth: CGFloat? // Nova propriedade para a largura máxima
-
-    init<Title: View, Content: View>(
-        maxWidth: CGFloat,
-        @ViewBuilder title: () -> Title,
-        @ViewBuilder content: @escaping (Element) -> Content
-    ) {
-        self.maxWidth = maxWidth
-        self.title = AnyView(title())
-        self.content = { AnyView(content($0)) }
-    }
-    
-    init<Title: View, Content: View>(
-        @ViewBuilder title: () -> Title,
-        @ViewBuilder content: @escaping (Element) -> Content
-    ) {
-        self.maxWidth = nil
-        self.title = AnyView(title())
-        self.content = { AnyView(content($0)) }
-    }
-}
-
 struct CustomTable<Element: Identifiable>: View {
     let items: [Element]
     let columns: [CustomTableColumn<Element>]
@@ -60,7 +34,7 @@ struct CustomTable<Element: Identifiable>: View {
                 .font(.headline)
                 Divider()
                 ForEach(items) { item in
-                    GridRow(alignment: .top) { // Alterado de .center para .top
+                    GridRow(alignment: .top) {
                         ForEach(0..<columns.count, id: \.self) { index in
                             let column = columns[index]
                             column.content(item)

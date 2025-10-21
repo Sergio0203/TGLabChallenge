@@ -8,7 +8,7 @@
 import NBAService
 import Foundation
 
-struct TeamModel: Codable, Identifiable {
+struct TeamModel: Identifiable, Hashable {
     let id: Int
     let name: String
     let conference: String
