@@ -26,15 +26,36 @@ struct GamesView: View {
         },
     ]
     var body: some View {
-        CustomTable(items: vm.gamesList, columns: columns)
-            .onAppear {
-                vm.fetchGames(from: selectedId)
-            }
-            .toolbar(.hidden, for: .tabBar)
-    }
+        ScrollView {
+            if !vm.gamesList.isEmpty {
+                LazyVStack {
+                    CustomTable(
+                        items: vm.gamesList,
+                        columns: columns
+                    )
 
+                    ProgressView()
+                        .onAppear{
+                            vm.loadMoreData(for: selectedId)
+                        }
+
+                }
+            } else {
+                ProgressView()
+            }
+        }
+        .navigationTitle(teamName)
+        .onAppear {
+            if vm.gamesList.isEmpty {
+                vm.loadInitialData(for: selectedId)
+            }
+        }
+        .toolbar(.hidden, for: .tabBar)
+    }
 }
 
 #Preview {
-    GamesView(selectedId: 1, teamName: "Xabulaba")
+    NavigationStack {
+        GamesView(selectedId: 1, teamName: "Xabulaba")
+    }
 }

@@ -24,14 +24,24 @@ public final class UrlSessionClient: ClientProtocol {
         endPoint.headers.forEach { key, value in
             request.addValue(value, forHTTPHeaderField: key)
         }
+        
+        let retryDelay: UInt64 = 10_000_000_000
+        while true {
+            do {
+                let (data, response) = try await URLSession.shared.data(for: request)
 
-        let (data, response) = try await URLSession.shared.data(for: request)
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    throw APIError.unknown
+                }
 
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw APIError.unknown
+                return try handleHTTPResponse(httpResponse, data: data)
+
+            } catch APIError.timeRequestLimit {
+                try await Task.sleep(nanoseconds: retryDelay)
+            } catch {
+                throw error
+            }
         }
-
-        return try handleHTTPResponse(httpResponse, data: data)
     }
 
     private func handleHTTPResponse<T: Decodable>(_ response: HTTPURLResponse, data: Data) throws -> T {
@@ -44,6 +54,8 @@ public final class UrlSessionClient: ClientProtocol {
             throw APIError.unauthorized
         case 404:
             throw APIError.notFound
+        case 429:
+            throw APIError.timeRequestLimit
         case 500...599:
             throw APIError.serverError
         default:

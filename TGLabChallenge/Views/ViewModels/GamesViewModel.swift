@@ -9,23 +9,49 @@ import NBAService
 
 @Observable
 final class GamesViewModel {
-    private let service = NBAService()
+    @ObservationIgnored private let service = NBAService()
     var gamesList: [GameModel] = []
 
-    func fetchGames(from teamID: Int) {
+    var isLoading = false
+    private var hasMoreData = true
+
+    private func fetchGames(from teamID: Int) {
+        guard !isLoading, hasMoreData else { return }
+
+        isLoading = true
+
         Task {
-            var auxPlayers: [GameModel] = []
             do {
-                let response = try await service.getGames(forTeamId: teamID)
-                response.forEach { team in
-                    auxPlayers.append(GameModel(by: team))
+                let response = try await service.getGames(forTeamId: teamID, cursor: gamesList.last?.id)
+                if response.isEmpty {
+                    self.hasMoreData = false
                 }
-                await MainActor.run {
-                    self.gamesList = auxPlayers
+                else {
+                    var newGames: [GameModel] = []
+                    response.forEach { game in
+                        newGames.append(GameModel(by: game))
+                    }
+                    await MainActor.run {
+                        self.gamesList += newGames
+                        self.isLoading = false
+                    }
                 }
             } catch {
-                print("Error fetching players: \(error)")
+                print("Error fetching games: \(error)")
+                await MainActor.run {
+                    self.isLoading = false
+                }
             }
         }
+    }
+
+    func loadInitialData(for teamID: Int) {
+        if gamesList.isEmpty {
+            fetchGames(from: teamID)
+        }
+    }
+
+    func loadMoreData(for teamID: Int) {
+        fetchGames(from: teamID)
     }
 }

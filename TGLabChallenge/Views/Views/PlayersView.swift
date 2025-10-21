@@ -8,7 +8,7 @@ import SwiftUI
 
 struct PlayersView: View {
     @State private var vm = PlayersViewModel()
-    
+
     private let columns: [CustomTableColumn<PlayerModel>] = [
         .init(maxWidth: 80, title: { TableCell("First Name") }) { player in
             TableCell(player.firstName)
@@ -23,20 +23,25 @@ struct PlayersView: View {
 
     var body: some View {
         NavigationStack {
-            CustomTable(
-                items: vm.playersList,
-                columns: columns,
-                onRowTapped: { player in
-                    vm.selectedPlayer = player
+            if vm.playersList.isEmpty {
+                ProgressView()
+                    .onAppear {
+                        vm.loadInitialData()
+                    }
+            } else {
+                CustomTable(
+                    items: vm.playersList,
+                    columns: columns,
+                    onRowTapped: { player in
+                        vm.selectedPlayer = player
+                    }
+                )
+
+
+                .navigationTitle("Players")
+                .navigationDestination(item: $vm.selectedPlayer) { player in
+                    GamesView(selectedId: player.team.id, teamName: player.team.name)
                 }
-            )
-            
-            .onAppear {
-                vm.loadInitialData()
-            }
-            .navigationTitle("Players")
-            .navigationDestination(item: $vm.selectedPlayer) { player in
-                GamesView(selectedId: player.team.id, teamName: player.team.name)
             }
         }
     }

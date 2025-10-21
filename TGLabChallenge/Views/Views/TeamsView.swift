@@ -22,21 +22,25 @@ struct TeamsView: View {
 
     var body: some View {
         NavigationStack {
-            CustomTable(
-                items: vm.teamsList,
-                columns: columns,
-                onRowTapped: { team in
-                    print(team.id)
-                    vm.selectedTeam = team
+            if vm.teamsList.isEmpty {
+                ProgressView()
+                    .onAppear() {
+                        vm.loadInitialData()
+                    }
+            } else {
+                CustomTable(
+                    items: vm.teamsList,
+                    columns: columns,
+                    onRowTapped: { team in
+                        vm.selectedTeam = team
+                    }
+                )
+                .navigationTitle("Home")
+                .navigationDestination(item: $vm.selectedTeam) { team in
+                    GamesView(selectedId: team.id, teamName: team.name)
                 }
-            )
-            .navigationTitle("Home")
-            .navigationDestination(item: $vm.selectedTeam) { team in
-                GamesView(selectedId: team.id, teamName: team.name)
             }
-            .onAppear() {
-                vm.loadInitialData()
-            }
+
         }
     }
 }

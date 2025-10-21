@@ -14,7 +14,7 @@ struct CustomTable<Element: Identifiable>: View {
     init(
         items: [Element],
         columns: [CustomTableColumn<Element>],
-        onRowTapped: ((Element) -> Void)? = nil
+        onRowTapped: ((Element) -> Void)? = nil,
     ) {
         self.items = items
         self.columns = columns
@@ -51,6 +51,7 @@ struct CustomTable<Element: Identifiable>: View {
                     }
                     Divider()
                 }
+
             }
             .padding()
             ViewThatFits(in: .horizontal) {

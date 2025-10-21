@@ -14,7 +14,7 @@ public enum APIError: LocalizedError {
     case decodingError
     case invalidURL
     case unknown
-
+    case timeRequestLimit
     var localizedDescription: String {
         switch self {
         case .badRequest:
@@ -29,6 +29,8 @@ public enum APIError: LocalizedError {
             return "Decoding Error"
         case .invalidURL:
             return "Invalid URL"
+        case .timeRequestLimit:
+            return "Request limit reached"
         case .unknown:
             return "Unknown Error"
         }
