@@ -15,11 +15,16 @@ enum SortingCriteria: String, CaseIterable {
 
 @Observable
 final class TeamsViewModel {
-    private let service = NBAService()
+    private let service: NBAServiceProtocol
     var teamsList: [TeamModel] = []
     var selectedTeam: TeamModel?
     var sortingCriteria: SortingCriteria = .name
     var showSheet: Bool = false
+
+    init(service: NBAServiceProtocol = NBAService()) {
+        self.service = service
+    }
+    
     private func fetchTeams() {
         Task {
             var auxTeams: [TeamModel] = []

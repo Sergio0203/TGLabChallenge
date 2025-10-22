@@ -10,12 +10,16 @@ import NBAService
 
 @Observable
 final class PlayersViewModel {
-    @ObservationIgnored private let service = NBAService()
+    @ObservationIgnored private let service: NBAServiceProtocol
     var playersList: [PlayerModel] = []
     var name: String = ""
     var selectedPlayer: PlayerModel?
     var isLoading: Bool = false
     @ObservationIgnored private var searchTask: Task<Void, Never>?
+
+    init(service: NBAServiceProtocol = NBAService()) {
+        self.service = service
+    }
 
     @MainActor
     private func fetchPlayers() async {
@@ -43,6 +47,8 @@ final class PlayersViewModel {
         searchTask?.cancel()
         searchTask = Task {
             do {
+                // Debounce de 1.5s não é ideal para testes unitários,
+                // por isso testaremos principalmente o `submitSearch`.
                 try await Task.sleep(for: .seconds(1.5))
                 await fetchPlayers()
             } catch {

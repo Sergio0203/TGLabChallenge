@@ -2,7 +2,9 @@
 // https://docs.swift.org/swift-book
 //
 import Client
-public struct NBAService {
+
+// Adicionamos conformidade com o NBAServiceProtocol
+public struct NBAService: NBAServiceProtocol {
     private let client: ClientProtocol
 
     public init() {

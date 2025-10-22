@@ -9,11 +9,15 @@ import NBAService
 
 @Observable
 final class GamesViewModel {
-    @ObservationIgnored private let service = NBAService()
+    @ObservationIgnored private let service: NBAServiceProtocol
     var gamesList: [GameModel] = []
 
     var isLoading = false
     private var hasMoreData = true
+
+    init(service: NBAServiceProtocol = NBAService()) {
+        self.service = service
+    }
 
     private func fetchGames(from teamID: Int) {
         guard !isLoading, hasMoreData else { return }
@@ -33,13 +37,14 @@ final class GamesViewModel {
                     }
                     await MainActor.run {
                         self.gamesList += newGames
-                        self.isLoading = false
                     }
                 }
             } catch {
-                await MainActor.run {
-                    self.isLoading = false
-                }
+                // Erro tratado silenciosamente, isLoading será false no `defer`
+            }
+            
+            await MainActor.run {
+                self.isLoading = false
             }
         }
     }
