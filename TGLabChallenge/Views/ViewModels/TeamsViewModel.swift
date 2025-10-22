@@ -43,6 +43,7 @@ final class TeamsViewModel {
             }
         }
     }
+    
     func loadInitialData() {
         if teamsList.isEmpty {
             fetchTeams()

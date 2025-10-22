@@ -5,10 +5,21 @@
 //  Created by Sérgio César Lira Júnior on 21/10/25.
 //
 import NBAService
+import Foundation
 
-enum MockErrors: Error {
-    case NetworkError
+enum MockErrors: LocalizedError {
+    case networkError
+    case cancelled
 
+    var errorDescription: String {
+        switch self {
+        case .networkError:
+            "network Error"
+
+        case .cancelled:
+            "cancelled"
+        }
+    }
 }
 
 final class MockNBAService: NBAServiceProtocol {
@@ -42,12 +53,10 @@ final class MockNBAService: NBAServiceProtocol {
         switch playerList {
         case .success(let players):
             return players
-        case .failure:
-            fatalError("No players found")
+        case .failure(let error):
+            throw error
         case .none:
             fatalError("PlayerList not configured")
         }
     }
-
-
 }

@@ -32,6 +32,8 @@ final class GameViewModelTests: XCTestCase {
     override func tearDown() {
         vm = nil
         mockNBAService = nil
+        teamsDTO = nil
+        gamesDTO = nil
         super.tearDown()
     }
 
@@ -58,7 +60,7 @@ final class GameViewModelTests: XCTestCase {
     func testLoadInitialData_Fail() async {
         //Arrange
         let expectedResponse: [GameModel] = []
-        mockNBAService.gameList = .failure(MockErrors.NetworkError)
+        mockNBAService.gameList = .failure(MockErrors.networkError)
         let expectation = XCTestExpectation(description: "waiting for Failure")
 
         //Act
@@ -97,7 +99,7 @@ final class GameViewModelTests: XCTestCase {
         vm.gamesList = [GameModel(by: gamesDTO[0])]
         let expectedResponse: [GameModel] = [GameModel(by: gamesDTO[0])]
         let expectation = XCTestExpectation(description: "waiting for Failure")
-        mockNBAService.gameList = .failure(MockErrors.NetworkError)
+        mockNBAService.gameList = .failure(MockErrors.networkError)
         //Act
         vm.loadMoreData(for: 1)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -122,7 +124,6 @@ final class GameViewModelTests: XCTestCase {
             expectation.fulfill()
         }
         await fulfillment(of: [expectation], timeout: 2.0)
-
         //Assert
         XCTAssertEqual(vm.gamesList, expectedList)
         XCTAssertEqual(vm.hasMoreData, expectedHasMoreData)

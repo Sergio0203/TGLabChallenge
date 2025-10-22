@@ -29,9 +29,8 @@ final class PlayersViewModel {
         do {
             let playersResponse = try await service.getPlayers(withName: name)
             playersList = playersResponse.map(PlayerModel.init)
-        } catch {
-            print("Error fetching players: \(error.localizedDescription)")
-            playersList = []
+        } catch  {
+            //Dont Update the Ui
         }
     }
 
