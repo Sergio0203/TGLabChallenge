@@ -7,12 +7,19 @@
 import SwiftUI
 import NBAService
 
+enum SortingCriteria: String, CaseIterable {
+    case name = "Name"
+    case conference = "Conference"
+    case city = "City"
+}
+
 @Observable
 final class TeamsViewModel {
     private let service = NBAService()
     var teamsList: [TeamModel] = []
     var selectedTeam: TeamModel?
-
+    var sortingCriteria: SortingCriteria = .name
+    var showSheet: Bool = false
     private func fetchTeams() {
         Task {
             var auxTeams: [TeamModel] = []
@@ -23,6 +30,7 @@ final class TeamsViewModel {
                 })
                 await MainActor.run {
                     self.teamsList = auxTeams
+                    sortTeamList()
                 }
             }
             catch let error{
@@ -36,4 +44,14 @@ final class TeamsViewModel {
         }
     }
 
+    func sortTeamList() {
+        switch sortingCriteria{
+        case .name:
+            teamsList.sort { $0.name < $1.name }
+        case .conference:
+            teamsList.sort { $0.conference < $1.conference }
+        case .city:
+            teamsList.sort { $0.city < $1.city }
+        }
+    }
 }

@@ -37,7 +37,6 @@ final class GamesViewModel {
                     }
                 }
             } catch {
-                print("Error fetching games: \(error)")
                 await MainActor.run {
                     self.isLoading = false
                 }

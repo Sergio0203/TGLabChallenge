@@ -10,12 +10,12 @@ import NBAService
 
 @Observable
 final class PlayersViewModel {
-    private let service = NBAService()
+    @ObservationIgnored private let service = NBAService()
     var playersList: [PlayerModel] = []
     var name: String = ""
     var selectedPlayer: PlayerModel?
     var isLoading: Bool = false
-    private var searchTask: Task<Void, Never>?
+    @ObservationIgnored private var searchTask: Task<Void, Never>?
 
     @MainActor
     private func fetchPlayers() async {
@@ -44,9 +44,9 @@ final class PlayersViewModel {
         searchTask = Task {
             do {
                 try await Task.sleep(for: .seconds(1.5))
-
                 await fetchPlayers()
             } catch {
+                
             }
         }
     }

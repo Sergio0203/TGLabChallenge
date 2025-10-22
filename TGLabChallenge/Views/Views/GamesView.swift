@@ -33,12 +33,10 @@ struct GamesView: View {
                         items: vm.gamesList,
                         columns: columns
                     )
-
                     ProgressView()
                         .onAppear{
                             vm.loadMoreData(for: selectedId)
                         }
-
                 }
             } else {
                 ProgressView()
@@ -54,8 +52,10 @@ struct GamesView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     NavigationStack {
-        GamesView(selectedId: 1, teamName: "Xabulaba")
+        GamesView(selectedId: 1, teamName: "Test")
     }
 }
+#endif

@@ -9,7 +9,7 @@ import SwiftUI
 struct TeamsView: View {
     @State var vm = TeamsViewModel()
     private let columns: [CustomTableColumn<TeamModel>] = [
-        .init(maxWidth: 110, title: { TableCell("Name") }) { team in
+        .init(maxWidth: 100, title: { TableCell("Name") }) { team in
             TableCell(team.name)
         },
         .init(maxWidth: 100, title: { TableCell("City") }) { team in
@@ -39,8 +39,32 @@ struct TeamsView: View {
                 .navigationDestination(item: $vm.selectedTeam) { team in
                     GamesView(selectedId: team.id, teamName: team.name)
                 }
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(action: {
+                            vm.showSheet = true
+                        }) {
+                            Text(vm.sortingCriteria.rawValue)
+                                .tint(.accentColor)
+                        }
+                    }
+                }
+                .sheet(isPresented: $vm.showSheet) {
+                    List {
+                        ForEach(SortingCriteria.allCases, id: \.rawValue) { sortingCriteria in
+                            Button(action: {
+                                vm.sortingCriteria = sortingCriteria
+                                vm.showSheet = false
+                            }, label: {
+                                Text(sortingCriteria.rawValue)
+                            })
+                        }
+                    }
+                }
+                .onChange(of: vm.sortingCriteria) {
+                    vm.sortTeamList()
+                }
             }
-
         }
     }
 }

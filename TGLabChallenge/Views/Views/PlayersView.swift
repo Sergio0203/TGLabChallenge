@@ -55,6 +55,7 @@ struct PlayersView: View {
             vm.loadInitialData()
         }
         .searchable(text: $vm.name, placement: .navigationBarDrawer, prompt: "Search a player")
+        
         .onChange(of: vm.name) {
             vm.search()
         }
@@ -64,7 +65,8 @@ struct PlayersView: View {
     }
 }
 
+#if DEBUG
 #Preview {
         PlayersView()
-
 }
+#endif
