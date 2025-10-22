@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		EB2FE48D2EA229FA002C6ADA /* NBAService in Frameworks */ = {isa = PBXBuildFile; productRef = EB2FE48C2EA229FA002C6ADA /* NBAService */; };
 		EB6699F02EA7248200EA6EAE /* NBAService in Frameworks */ = {isa = PBXBuildFile; productRef = EB6699EF2EA7248200EA6EAE /* NBAService */; };
+		EB669B812EA8A75C00EA6EAE /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = EB669B802EA8A75500EA6EAE /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +33,7 @@
 		EB2FE4612EA229B9002C6ADA /* TGLabChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TGLabChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB2FE46E2EA229BA002C6ADA /* TGLabChallengeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TGLabChallengeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB2FE4782EA229BA002C6ADA /* TGLabChallengeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TGLabChallengeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB669B802EA8A75500EA6EAE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -82,6 +84,7 @@
 		EB2FE4582EA229B9002C6ADA = {
 			isa = PBXGroup;
 			children = (
+				EB669B802EA8A75500EA6EAE /* README.md */,
 				EB2FE4632EA229B9002C6ADA /* TGLabChallenge */,
 				EB2FE4712EA229BA002C6ADA /* TGLabChallengeTests */,
 				EB2FE47B2EA229BA002C6ADA /* TGLabChallengeUITests */,
@@ -224,6 +227,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB669B812EA8A75C00EA6EAE /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
