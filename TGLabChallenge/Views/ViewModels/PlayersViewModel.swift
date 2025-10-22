@@ -46,8 +46,6 @@ final class PlayersViewModel {
         searchTask?.cancel()
         searchTask = Task {
             do {
-                // Debounce de 1.5s não é ideal para testes unitários,
-                // por isso testaremos principalmente o `submitSearch`.
                 try await Task.sleep(for: .seconds(1.5))
                 await fetchPlayers()
             } catch {
