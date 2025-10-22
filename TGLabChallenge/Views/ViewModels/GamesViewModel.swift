@@ -13,7 +13,7 @@ final class GamesViewModel {
     var gamesList: [GameModel] = []
 
     var isLoading = false
-    private var hasMoreData = true
+    var hasMoreData = true
 
     init(service: NBAServiceProtocol = NBAService()) {
         self.service = service
@@ -39,10 +39,8 @@ final class GamesViewModel {
                         self.gamesList += newGames
                     }
                 }
-            } catch {
-                // Erro tratado silenciosamente, isLoading será false no `defer`
-            }
-            
+            } catch {}
+
             await MainActor.run {
                 self.isLoading = false
             }

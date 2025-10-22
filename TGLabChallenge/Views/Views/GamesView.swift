@@ -33,10 +33,12 @@ struct GamesView: View {
                         items: vm.gamesList,
                         columns: columns
                     )
-                    ProgressView()
-                        .onAppear{
-                            vm.loadMoreData(for: selectedId)
-                        }
+                    if vm.hasMoreData {
+                        ProgressView()
+                            .onAppear{
+                                vm.loadMoreData(for: selectedId)
+                            }
+                    }
                 }
             } else {
                 ProgressView()

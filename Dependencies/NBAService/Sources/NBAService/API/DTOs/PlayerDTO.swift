@@ -10,6 +10,14 @@ public struct PlayerDTO: Codable {
     public let lastName: String
     public let team: TeamDTO
     public let id: Int
+
+    public init(firstName: String, lastName: String, team: TeamDTO, id: Int) {
+        self.firstName = firstName
+        self.lastName = lastName
+        self.team = team
+        self.id = id
+    }
+
     enum CodingKeys: String, CodingKey {
         case firstName = "first_name"
         case lastName =  "last_name"

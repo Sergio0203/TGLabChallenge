@@ -6,7 +6,7 @@
 //
 import NBAService
 
-struct GameModel: Identifiable {
+struct GameModel: Identifiable, Equatable {
     let id: Int
     let homeName: String
     let visitorName: String

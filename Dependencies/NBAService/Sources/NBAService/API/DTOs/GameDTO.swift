@@ -12,6 +12,13 @@ public struct GameDTO: Codable, Identifiable {
     public let visitorTeam: TeamDTO
     public let visitorTeamScore: Int
 
+    public init(id: Int, homeTeam: TeamDTO, homeTeamScore: Int, visitorTeam: TeamDTO, visitorTeamScore: Int) {
+        self.id = id
+        self.homeTeam = homeTeam
+        self.homeTeamScore = homeTeamScore
+        self.visitorTeam = visitorTeam
+        self.visitorTeamScore = visitorTeamScore
+    }
     enum CodingKeys: String, CodingKey {
         case id
         case homeTeam = "home_team"
