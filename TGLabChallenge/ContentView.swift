@@ -9,19 +9,18 @@ import SwiftUI
 import NBAService
 struct ContentView: View {
     var body: some View {
-            TabView {
-                TeamsView()
-                    .tabItem {
-                        Label("Home", systemImage: "list.bullet")
-                    }
-                PlayersView()
-                    .tabItem {
-                        Label("Players", systemImage: "gamecontroller")
-                    }
-            }
+        TabView {
+            TeamsView()
+                .tabItem {
+                    Label("Home", systemImage: "list.bullet")
+                }
+            PlayersView()
+                .tabItem {
+                    Label("Players", systemImage: "person")                   }
+        }
     }
 }
-    
+
 #Preview {
     ContentView()
 }
